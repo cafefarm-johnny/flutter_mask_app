@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mask/model/remain_stats_type.dart';
 import 'package:http/http.dart' as http;
 
 import 'model/store.dart';
@@ -103,9 +104,27 @@ class _MyHomePageState extends State<MyHomePage> {
         return ListTile(
           title: Text(e.name ?? ''),
           subtitle: Text(e.addr ?? ''),
-          trailing: Text(e.remainStat ?? '매진'),
+          trailing: _buildTrailing(e),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildTrailing(Store store) {
+    final remainStatsType = RemainStatsType.byString(store.remainStat ?? '');
+
+    return Column(
+      children: [
+        Text(
+          remainStatsType.status,
+          style: TextStyle(
+              color: remainStatsType.color, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          remainStatsType.description,
+          style: TextStyle(color: remainStatsType.color),
+        ),
+      ],
     );
   }
 }
