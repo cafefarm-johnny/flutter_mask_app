@@ -73,7 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('마스크 재고 있는 곳 : ${stores.length}곳'),
+        title: Text(
+            '마스크 재고 있는 곳 : ${stores.where((e) => RemainStatsType.byString(e.remainStat ?? '').isGreaterThanFew()).length}곳'),
         actions: [
           // 새로고침
           IconButton(
@@ -100,7 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildBody() {
     return ListView(
-      children: stores.map((e) {
+      children: stores
+          .where((e) =>
+              RemainStatsType.byString(e.remainStat ?? '').isGreaterThanFew())
+          .map((e) {
         return ListTile(
           title: Text(e.name ?? ''),
           subtitle: Text(e.addr ?? ''),
