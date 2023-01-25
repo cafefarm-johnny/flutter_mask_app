@@ -22,10 +22,11 @@ class StoreRepository {
 
     jsonStores.forEach((e) {
       final store = Store.fromJson(e);
+      // 위도, 경도에 대한 범위 탐색 알고리즘은 임의로 작성
       if (store.lat != null &&
-          store.lat == lat &&
+          store.lat! <= lat &&
           store.lng != null &&
-          store.lng == lng) {
+          store.lng! >= lng) {
         stores.add(store);
       }
     });
