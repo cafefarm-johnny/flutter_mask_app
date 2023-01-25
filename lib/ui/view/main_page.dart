@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mask/ui/widget/store_list_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/remain_stats_type.dart';
-import '../../model/store.dart';
 import '../../view_model/store_model.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -14,7 +14,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '마스크 재고 있는 곳 : ${storeModel.stores.where((e) => RemainStatsType.byString(e.remainStat ?? '').isGreaterThanFew()).length}곳'),
+            '마스크 재고 있는 곳 : ${storeModel.stores.where((e) => RemainStatsType.byString(e.remainStat ?? '').isGteFew()).length}곳'),
         actions: [
           // 새로고침
           IconButton(
@@ -44,33 +44,15 @@ class MyHomePage extends StatelessWidget {
   Widget buildBody(StoreModel storeModel) {
     return ListView(
       children: storeModel.stores
-          .where((e) =>
-              RemainStatsType.byString(e.remainStat ?? '').isGreaterThanFew())
-          .map((e) {
-        return ListTile(
-          title: Text(e.name ?? ''),
-          subtitle: Text(e.addr ?? ''),
-          trailing: _buildTrailing(e),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildTrailing(Store store) {
-    final remainStatsType = RemainStatsType.byString(store.remainStat ?? '');
-
-    return Column(
-      children: [
-        Text(
-          remainStatsType.status,
-          style: TextStyle(
-              color: remainStatsType.color, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          remainStatsType.description,
-          style: TextStyle(color: remainStatsType.color),
-        ),
-      ],
+          .where((e) => RemainStatsType.byString(e.remainStat ?? '').isGteFew())
+          .map(
+            (e) => ListTile(
+              title: Text(e.name ?? ''),
+              subtitle: Text(e.addr ?? ''),
+              trailing: StoreListTileTrailing(store: e),
+            ),
+          )
+          .toList(),
     );
   }
 }

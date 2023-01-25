@@ -18,5 +18,5 @@ enum RemainStatsType {
         .firstWhere((e) => e.name == remainStat, orElse: () => dfault);
   }
 
-  bool isGreaterThanFew() => this == plenty || this == some || this == few;
+  bool isGteFew() => this == plenty || this == some || this == few;
 }
