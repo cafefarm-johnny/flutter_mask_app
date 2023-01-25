@@ -40,6 +40,6 @@ class StoreRepository {
       }
     });
 
-    return stores;
+    return stores..sort((a, b) => a.km?.compareTo(b.km ?? 0) ?? 0);
   }
 }
