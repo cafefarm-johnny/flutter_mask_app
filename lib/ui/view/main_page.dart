@@ -45,13 +45,7 @@ class MyHomePage extends StatelessWidget {
     return ListView(
       children: storeModel.stores
           .where((e) => RemainStatsType.byString(e.remainStat ?? '').isGteFew())
-          .map(
-            (e) => ListTile(
-              title: Text(e.name ?? ''),
-              subtitle: Text(e.addr ?? ''),
-              trailing: StoreListTileTrailing(store: e),
-            ),
-          )
+          .map((e) => StoreListTileTrailing(store: e))
           .toList(),
     );
   }

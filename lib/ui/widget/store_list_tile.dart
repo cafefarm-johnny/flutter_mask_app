@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/remain_stats_type.dart';
 import '../../model/store.dart';
@@ -13,7 +14,14 @@ class StoreListTileTrailing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTrailing(this.store);
+    return ListTile(
+      title: Text(store.name ?? ''),
+      subtitle: Text(store.addr ?? ''),
+      trailing: _buildTrailing(store),
+      onTap: () {
+        _launchUrl(store.lat?.toDouble() ?? 0, store.lng?.toDouble() ?? 0);
+      },
+    );
   }
 
   Widget _buildTrailing(Store store) {
@@ -36,5 +44,13 @@ class StoreListTileTrailing extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _launchUrl(double lat, double lng) async {
+    final uri =
+        Uri.parse('https://google.com/maps/search/?api=1&query=$lat,$lng');
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $uri');
+    }
   }
 }
