@@ -16,7 +16,13 @@ class StoreListTileTrailing extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(store.name ?? ''),
-      subtitle: Text(store.addr ?? ''),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(store.addr ?? ''),
+          Text('${store.km ?? 0}km'),
+        ],
+      ),
       trailing: _buildTrailing(store),
       onTap: () {
         _launchUrl(store.lat?.toDouble() ?? 0, store.lng?.toDouble() ?? 0);

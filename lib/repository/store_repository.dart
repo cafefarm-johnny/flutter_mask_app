@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 
 import '../model/store.dart';
 
 class StoreRepository {
+  final _distance = const Distance();
   final stores = <Store>[];
 
   Future<List<Store>> fetch(double lat, double lng) async {
@@ -27,6 +29,13 @@ class StoreRepository {
           store.lat! <= lat &&
           store.lng != null &&
           store.lng! >= lng) {
+        final km = _distance.as(
+          LengthUnit.Kilometer,
+          LatLng(store.lat?.toDouble() ?? 0, store.lng?.toDouble() ?? 0),
+          LatLng(lat, lng),
+        );
+        store.km = km;
+
         stores.add(store);
       }
     });
