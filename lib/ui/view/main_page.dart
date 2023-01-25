@@ -25,11 +25,11 @@ class MyHomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: storeModel.isLoading ? buildLoading() : buildBody(storeModel),
+      body: buildBody(storeModel),
     );
   }
 
-  Widget buildLoading() {
+  Widget _buildLoading() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +41,27 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildError() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('반경 5km 이내에 재고가 있는 매장이 없습니다.'),
+          Text('또는 인터넷이 연결되어 있는지 확인해주세요.'),
+        ],
+      ),
+    );
+  }
+
   Widget buildBody(StoreModel storeModel) {
+    if (storeModel.isLoading) {
+      return _buildLoading();
+    }
+
+    if (storeModel.stores.isEmpty) {
+      return _buildError();
+    }
+
     return ListView(
       children: storeModel.stores
           .where((e) => RemainStatsType.byString(e.remainStat ?? '').isGteFew())
