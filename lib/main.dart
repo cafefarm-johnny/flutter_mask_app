@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mask/model/remain_stats_type.dart';
+import 'package:flutter_mask/repository/store_repository.dart';
 import 'package:http/http.dart' as http;
 
 import 'model/store.dart';
@@ -34,39 +35,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final stores = <Store>[];
-  bool isLoading = true;
+  var stores = <Store>[];
+  var isLoading = false;
 
-  Future<void> fetch() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    const url =
-        'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode != 200) {
-      return;
-    }
-
-    final result = jsonDecode(response.body);
-    final jsonStores = result['stores'];
-
-    setState(() {
-      stores.clear();
-
-      jsonStores.forEach((e) {
-        stores.add(Store.fromJson(e));
-      });
-
-      isLoading = false;
-    });
-  }
+  final storeRepository = StoreRepository();
 
   @override
   void initState() {
     super.initState();
-    fetch();
+
+    storeRepository.fetch()
+      .then((stores) {
+        setState(() {
+          this.stores = stores;
+        });
+      });
   }
 
   @override
@@ -78,7 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           // 새로고침
           IconButton(
-            onPressed: fetch,
+            onPressed: () {
+              storeRepository.fetch()
+                .then((stores) {
+                  setState(() {
+                    this.stores = stores;
+                  });
+              });
+            },
             icon: const Icon(Icons.refresh),
           ),
         ],
