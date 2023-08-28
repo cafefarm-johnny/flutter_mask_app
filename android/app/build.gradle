@@ -53,6 +53,20 @@ android {
         versionName flutterVersionName
     }
 
+    flavorDimensions "at"
+
+    productFlavors {
+        dev {
+            dimension "at"
+            applicationId "com.example.flutter_mask"
+            applicationIdSuffix ".dev"
+        }
+        prod {
+            dimension "at"
+            applicationId "com.example.flutter_mask"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
