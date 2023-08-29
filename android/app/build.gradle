@@ -60,10 +60,12 @@ android {
             dimension "at"
             applicationId "com.example.flutter_mask"
             applicationIdSuffix ".dev"
+            resValue "string", "app_name", "mask Dev"
         }
         prod {
             dimension "at"
             applicationId "com.example.flutter_mask"
+            resValue "string", "app_name", "mask Prod"
         }
     }
 
